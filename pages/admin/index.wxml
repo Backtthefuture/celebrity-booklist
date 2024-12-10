@@ -1,0 +1,115 @@
+<view class="container">
+  <view class="section">
+    <view class="section-title">{{isEditing ? '编辑' : '添加'}}名人信息</view>
+    
+    <!-- 名人基本信息 -->
+    <view class="form-item">
+      <text class="label">姓名：</text>
+      <input class="input" 
+        value="{{newCelebrity.name}}"
+        data-field="newCelebrity.name"
+        bindinput="onInput"
+        placeholder="请输入名人姓名"/>
+    </view>
+
+    <view class="form-item">
+      <text class="label">简介：</text>
+      <input class="input"
+        value="{{newCelebrity.introduction}}"
+        data-field="newCelebrity.introduction"
+        bindinput="onInput"
+        placeholder="请输入一句话简介"/>
+    </view>
+
+    <view class="form-item">
+      <text class="label">头像：</text>
+      <button class="upload-btn" bindtap="uploadAvatar">上传头像</button>
+      <image wx:if="{{newCelebrity.avatarPath}}" 
+        src="{{newCelebrity.avatarPath}}"
+        mode="aspectFill"
+        class="preview-image"/>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">添加推荐书籍</view>
+    
+    <!-- 书籍信息 -->
+    <view class="form-item">
+      <text class="label">书名：</text>
+      <input class="input"
+        value="{{newBook.title}}"
+        data-field="newBook.title"
+        bindinput="onInput"
+        placeholder="请输入书名"/>
+    </view>
+
+    <view class="form-item">
+      <text class="label">作者：</text>
+      <input class="input"
+        value="{{newBook.author}}"
+        data-field="newBook.author"
+        bindinput="onInput"
+        placeholder="请输入作者"/>
+    </view>
+
+    <view class="form-item">
+      <text class="label">简介：</text>
+      <textarea class="textarea"
+        value="{{newBook.description}}"
+        data-field="newBook.description"
+        bindinput="onInput"
+        placeholder="请输入书籍简介（选填）"/>
+    </view>
+
+    <view class="form-item">
+      <text class="label">封面：</text>
+      <button class="upload-btn" bindtap="uploadBookCover">上传封面</button>
+      <image wx:if="{{newBook.coverPath}}"
+        src="{{newBook.coverPath}}"
+        mode="aspectFill"
+        class="preview-image"/>
+    </view>
+
+    <button class="add-book-btn" bindtap="addBook">添加到书单</button>
+  </view>
+
+  <!-- 书籍列表 -->
+  <view class="section" wx:if="{{newCelebrity.books.length > 0}}">
+    <view class="section-title">已添加的书籍</view>
+    <view class="book-list">
+      <view class="book-item" wx:for="{{newCelebrity.books}}" wx:key="title">
+        <image class="book-cover" src="{{item.cover}}" mode="aspectFill"/>
+        <view class="book-info">
+          <text class="book-title">{{item.title}}</text>
+          <text class="book-author">{{item.author}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 保存按钮 -->
+  <view class="button-group">
+    <button class="btn" type="primary" bindtap="saveCelebrity">{{isEditing ? '保存修改' : '保存'}}</button>
+    <button class="btn" bindtap="cancelEdit" wx:if="{{isEditing}}">取消编辑</button>
+  </view>
+
+  <!-- 名人列表 -->
+  <view class="section">
+    <view class="section-title">名人列表</view>
+    <view class="celebrity-list">
+      <view class="celebrity-item" wx:for="{{celebrities}}" wx:key="_id">
+        <image class="celebrity-avatar" src="{{item.avatar}}" mode="aspectFill"/>
+        <view class="celebrity-info">
+          <text class="celebrity-name">{{item.name}}</text>
+          <text class="celebrity-intro">{{item.introduction}}</text>
+          <text class="book-count">推荐书籍：{{item.books.length}}本</text>
+        </view>
+        <view class="celebrity-actions">
+          <button class="action-btn edit" bindtap="editCelebrity" data-celebrity="{{item}}">编辑</button>
+          <button class="action-btn delete" bindtap="deleteCelebrity" data-id="{{item._id}}">删除</button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
